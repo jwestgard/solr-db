@@ -1,0 +1,49 @@
+# Hippo Database Preprocessor Configuration for IRRoC
+# 2016-03-31
+
+id:
+    source: ID
+    
+str_resource:
+    source: strResource
+    
+str_description: 
+    source: strDescription
+    
+website: 
+    source: website
+    operation: regex
+    expression: '#(.+)#'
+    
+see_also_url: 
+    source: SeeAlsoLink
+    
+meta_title: 
+    source: MetaTitle
+    
+meta_description:
+    source: MetaDescription
+    operation: filter
+    match: ', '
+    replacement: ','
+    
+stage_list:
+    source: Stage_list
+    
+task_list:
+    source: Task_list
+    
+category:
+    source: category_list
+    
+stage_list_facet:
+    source: Stage_list
+    operation: filter
+    match: '; '
+    replacement: ';'
+    
+task_list_facet:
+    source: Task_list
+    operation: filter
+    match: '; '
+    replacement: ';'
