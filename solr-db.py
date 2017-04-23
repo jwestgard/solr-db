@@ -7,6 +7,8 @@ import argparse
 import csv
 import requests
 
+HOST = 'localhost'
+PORT = '8983'
 
 #=== SUBCOMMAND =============================================================
 #         NAME: load
@@ -20,26 +22,30 @@ http://localhost:9600/solr/irroc/update/csv?commit=true&f.meta_description.split
 
 def load(args):
     '''load CSV data to Solr'''
-    print('Loading CSV to Solr!')
-    host = 'localhost'
-    port = '8983'
     core = args.core
-    url = '{0}:{1}/solr/{2}/update/csv'.format(host, port, core)
+    url = 'http://{0}:{1}/solr/{2}/update/csv'.format(HOST, PORT, core)
     headers = {'Content-type': 'text/csv', 'charset': 'utf-8'}
     params = {'commit': True}
 
     with open(args.data, 'r') as datafile:
         header_row = next(csv.reader(datafile))
+        print('Reading column info from data file: {0}'.format(args.data))
         for col in header_row:
-            key1 = 'f.{0}.split'.format(col)
-            key2 = 'f.{0}.separator'.format(col)
-            params[key1] = True
-            params[key2] = ';'
+            if col.startswith('['):
+                fieldname = col.strip('[]')
+                key1 = 'f.{0}.split'.format(fieldname)
+                key2 = 'f.{0}.separator'.format(fieldname)
+                params[key1] = 'true'
+                params[key2] = ';'
 
     with open(args.data, 'rb') as datafile:
         data = datafile.read()
-        response = requests.post(url, data=data, headers=headers)
-        print(response.url)
+        response = requests.post(url, data=data, 
+                                 params=params,
+                                 headers=headers
+                                 )
+        print('Querying {0}'.format(response.url))
+        print(response.text)
 
 
 #=== SUBCOMMAND =============================================================
