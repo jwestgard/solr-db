@@ -49,7 +49,6 @@ with open(sys.argv[1], 'r') as infile, open(sys.argv[2], 'w') as outfile:
         # create stage_list_facet and task_list_facet cols and strip numbers
         row['stage_list'] = re.sub(exp, r'\1', row['stage_list_facet'])
         row['task_list'] = re.sub(exp, r'\1', row['task_list_facet'])
-        #row['college_facet'] = row['str_college'].lower()
                 
         # write row
         dw.writerow(row)
