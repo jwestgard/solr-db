@@ -2,19 +2,22 @@
 # -*- coding: utf8 -*-
 #
 #===================================================#
-#                    cleanup.py                     #
+#                    irroc.py                     #
 #                  Joshua Westgard                  # 
 #                    2015-12-11                     #
+#                     Updated                       #
+#                   David Durden                    #
+#                    2018-07-30                     #
 #                                                   #
 #      Data preprocessing script for IRRoC DB       #
-#   Usage: python3 cleanup.py [in.csv] [out.csv]    #
+#   Usage: python3 irroc.py [in.csv] [out.csv]    #
 #===================================================#
 
 import sys, csv, re
 
-infields = ['id', 'str_resource', 'str_description', 'website',
-            'see_also_url', 'meta_title', 'meta_description', 'stage_list',
-            'task_list', 'category']
+# new infields
+infields = ['id', 'str_resource', 'str_description', 'website', 'see_also_url', 'meta_title',
+            'meta_description', 'stage_list', 'task_list', 'category_list', 'college', 'college_display']
 
 outfields = infields + ['stage_list_facet', 'task_list_facet']
 
@@ -46,6 +49,7 @@ with open(sys.argv[1], 'r') as infile, open(sys.argv[2], 'w') as outfile:
         # create stage_list_facet and task_list_facet cols and strip numbers
         row['stage_list'] = re.sub(exp, r'\1', row['stage_list_facet'])
         row['task_list'] = re.sub(exp, r'\1', row['task_list_facet'])
+        #row['college_facet'] = row['str_college'].lower()
                 
         # write row
         dw.writerow(row)
